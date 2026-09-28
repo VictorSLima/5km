@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rumo aos 5 km</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F2; --paper:#FFFFFF; --ink:#16233F; --muted:#5B6680; --line:#D5DAE1;
+  --navy:#16233F; --tape:#FFD23F; --on-navy:#FFFFFF;
+  --bel:#D93D74; --victor:#2F6FDB; --henrique:#16925F; --gab:#E0782B;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10172A; --paper:#1A2440; --ink:#EEF1F6; --muted:#9AA5BD; --line:#2B3656;
+    --navy:#0B1224; --bel:#F0689A; --victor:#6A9BF0; --henrique:#3CC48A; --gab:#F29A55;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10172A; --paper:#1A2440; --ink:#EEF1F6; --muted:#9AA5BD; --line:#2B3656;
+  --navy:#0B1224; --bel:#F0689A; --victor:#6A9BF0; --henrique:#3CC48A; --gab:#F29A55;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--tape);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+
+/* Hero */
+.hero{background:var(--navy);color:var(--on-navy);position:relative;overflow:hidden}
+.hero .wrap{padding-top:28px;padding-bottom:30px}
+.event{font-family:var(--display);font-weight:600;font-size:1.05rem;letter-spacing:.02em;opacity:.8;margin:0}
+.count{display:flex;align-items:flex-end;gap:14px;margin:6px 0 4px}
+.count b{font-family:var(--display);font-weight:800;font-size:clamp(5.5rem,26vw,9.5rem);line-height:.82;letter-spacing:-.02em}
+.count span{font-family:var(--display);font-weight:700;font-size:clamp(1.4rem,6vw,2rem);line-height:1;padding-bottom:.35em}
+.hero p.sub{margin:10px 0 0;max-width:34ch;opacity:.85}
+.finish{height:18px;background:repeating-conic-gradient(#fff 0 25%,#16233F 0 50%) 0 0/18px 18px}
+.family{display:flex;align-items:center;gap:12px;margin-top:20px}
+.family .bar{flex:1;height:10px;border-radius:5px;background:rgba(255,255,255,.18);overflow:hidden}
+.family .bar i{display:block;height:100%;background:var(--tape);border-radius:5px;transition:width .6s ease}
+.family small{font-weight:600;white-space:nowrap}
+
+/* Tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:6px;padding-top:10px;padding-bottom:10px}
+.tabs button{flex:1;border:0;background:transparent;padding:10px 6px;border-radius:10px;font-family:var(--display);font-weight:700;font-size:1.15rem;cursor:pointer;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff}
+
+main .wrap{padding-top:22px;padding-bottom:60px}
+h2{font-family:var(--display);font-weight:800;font-size:2rem;line-height:1;margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 18px}
+
+/* Person picker */
+.who{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
+.who button{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
+.who button::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+.who button[aria-pressed="true"]{border-color:var(--c);background:var(--c);color:#fff}
+.who button[aria-pressed="true"]::before{background:#fff}
+
+/* Week nav */
+.weeknav{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.weeknav button{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--paper);cursor:pointer;font-size:1.2rem;flex:none}
+.weeknav button:disabled{opacity:.35;cursor:default}
+.weeknav div{flex:1;text-align:center}
+.weeknav strong{display:block;font-family:var(--display);font-size:1.5rem;line-height:1.05}
+.weeknav small{color:var(--muted)}
+.tag{display:inline-block;background:var(--tape);color:#16233F;font-weight:700;font-size:.8rem;border-radius:4px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+
+.weekscore{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 10px}
+.weekscore b{font-family:var(--display);font-size:1.6rem}
+.note{font-size:.93rem;color:var(--muted);margin:0 0 12px}
+
+/* Check items */
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;transition:background .2s,border-color .2s}
+.item .box{flex:none;width:30px;height:30px;border-radius:50%;border:2.5px solid var(--c);display:grid;place-items:center;margin-top:1px}
+.item .box svg{width:16px;height:16px;opacity:0}
+.item .t{font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.item .t em{font-style:normal;font-family:var(--display);font-weight:700;color:var(--muted)}
+.item .d{color:var(--muted);font-size:.95rem;margin-top:2px}
+.item.done{background:var(--c);border-color:var(--c);color:#fff}
+.item.done .d,.item.done .t em{color:rgba(255,255,255,.85)}
+.item.done .box{background:#fff;border-color:#fff}
+.item.done .box svg{opacity:1}
+.item.done .box svg path{stroke:var(--c)}
+.item.pop{animation:pop .35s ease}
+@keyframes pop{50%{transform:scale(1.025)}}
+.item .day{display:block;font-family:var(--display);font-weight:700;font-size:.95rem;color:var(--c);margin-bottom:1px}
+.item.done .day{color:#fff}
+.item.today{box-shadow:0 0 0 3px var(--tape)}
+.items li.rest{background:transparent;border:2px dashed var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-weight:600}
+.items li.rest .day{display:block;font-family:var(--display);font-weight:700;font-size:.95rem}
+.items li.rest.today{border-color:var(--tape)}
+.wk .body p.str{border-left-style:dashed}
+.wk .body p.off{border-left-color:var(--line);color:var(--muted)}
+.wk .body b{font-family:var(--display);display:inline-block;min-width:4.6em}
+.group{font-family:var(--display);font-weight:700;font-size:1.2rem;margin:18px 0 8px}
+details.ex{background:var(--paper);border:2px dashed var(--line);border-radius:14px;padding:12px 14px;margin-top:8px}
+details.ex summary{cursor:pointer;font-weight:600}
+.exlist{list-style:none;margin:10px 0 0;padding:0}
+.exlist li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--line)}
+.exlist li span:last-child{font-family:var(--display);font-weight:700;white-space:nowrap}
+
+/* Bibs */
+.bibs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.bib{background:var(--paper);border-radius:12px;position:relative;overflow:hidden;border:2px solid var(--line)}
+.bib::before,.bib::after,.bib .h1,.bib .h2{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--line);top:40px}
+.bib::before{left:8px}.bib::after{right:8px}
+.bib .h1,.bib .h2{top:auto;bottom:8px}.bib .h1{left:8px}.bib .h2{right:8px}
+.bib header{background:var(--c);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.bib .num{font-family:var(--display);font-weight:800;font-size:3.6rem;line-height:1;text-align:center;padding:14px 8px 0;color:var(--ink)}
+.bib .nm{text-align:center;font-family:var(--display);font-weight:700;font-size:1.35rem;margin-top:2px}
+.bib .st{text-align:center;color:var(--muted);font-size:.88rem;padding:4px 10px 22px}
+.bib.first{border-color:var(--tape);box-shadow:0 0 0 3px var(--tape)}
+
+.feed{list-style:none;margin:0;padding:0}
+.feed li{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.feed .dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
+.feed .when{margin-left:auto;color:var(--muted);font-size:.85rem;white-space:nowrap}
+.empty{color:var(--muted);background:var(--paper);border-radius:12px;padding:16px;text-align:center}
+
+/* Plan */
+.wk{background:var(--paper);border:2px solid var(--line);border-radius:14px;margin-bottom:10px}
+.wk.now{border-color:var(--navy)}
+.wk summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;gap:10px}
+.wk summary::-webkit-details-marker{display:none}
+.wk summary strong{font-family:var(--display);font-size:1.25rem}
+.wk summary small{color:var(--muted)}
+.wk .body{padding:0 14px 12px}
+.wk .body p{margin:6px 0;padding-left:14px;border-left:3px solid var(--c)}
+.wk .body p.fam{border-left-color:var(--tape)}
+.pts{background:var(--paper);border-radius:14px;padding:14px;border:2px solid var(--line);margin-bottom:22px}
+.pts ul{margin:6px 0 0;padding-left:20px}
+
+.localbar{background:var(--tape);color:#16233F;font-size:.88rem;text-align:center;padding:6px 12px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;transition:transform .3s ease;z-index:10;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="localbar" class="localbar" hidden>Modo teste: os checks ficam salvos só neste aparelho.</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="event">Maratona Internacional de São Paulo, 5 km</p>
+    <div class="count"><b id="days">–</b><span id="dayslabel">dias para<br>a largada</span></div>
+    <p class="sub" id="heroSub"></p>
+    <div class="family"><div class="bar"><i id="famBar" style="width:0"></i></div><small id="famTxt"></small></div>
+  </div>
+  <div class="finish" aria-hidden="true"></div>
+</header>
+
+<nav class="tabs" aria-label="Seções">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="semana" aria-selected="true">Semana</button>
+    <button role="tab" data-tab="placar" aria-selected="false">Placar</button>
+    <button role="tab" data-tab="plano" aria-selected="false">Plano</button>
+  </div>
+</nav>
+
+<main><div class="wrap" id="view"></div></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==== CONFIGURAÇÃO ==== */
+const SCRIPT_URL = ""; // cole aqui a URL do Apps Script (termina em /exec)
+
+/* ==== DADOS ==== */
+const START = new Date(2026,9,1);   // 01/10/2026
+const RACE  = new Date(2027,0,27);  // 27/01/2027
+const WEEKS = 17;
+const DAY = 864e5;
+
+const PEOPLE = [
+  {id:"bel", name:"Bel", color:"var(--bel)"},
+  {id:"victor", name:"Victor", color:"var(--victor)"},
+  {id:"henrique", name:"Henrique", color:"var(--henrique)"},
+  {id:"gab", name:"Gab", color:"var(--gab)"}
+];
+
+const BEL = [
+  ["30 min de caminhada rápida","30 min de caminhada rápida","30 min de caminhada rápida"],
+  ["6 × (1 min trotando, 2 min andando)","6 × (1 min trotando, 2 min andando)","6 × (1 min trotando, 2 min andando)"],
+  ["6 × (1 min 30 s trotando, 2 min andando)","6 × (1 min 30 s trotando, 2 min andando)","6 × (1 min 30 s trotando, 2 min andando)"],
+  ["5 × (2 min trotando, 2 min andando)","5 × (2 min trotando, 2 min andando)","5 × (2 min trotando, 2 min andando)"],
+  ["5 × (3 min trotando, 2 min andando)","5 × (3 min trotando, 2 min andando)","5 × (3 min trotando, 2 min andando)"],
+  ["4 × (4 min trotando, 2 min andando)","4 × (4 min trotando, 2 min andando)","4 × (4 min trotando, 2 min andando)"],
+  ["3 × (5 min trotando, 2 min andando)","3 × (5 min trotando, 2 min andando)","3 × (5 min trotando, 2 min andando)"],
+  ["4 × (4 min trotando, 1 min 30 s andando)","4 × (4 min trotando, 1 min 30 s andando)","4 × (4 min trotando, 1 min 30 s andando)"],
+  ["3 × (7 min trotando, 2 min andando)","3 × (7 min trotando, 2 min andando)","3 × (7 min trotando, 2 min andando)"],
+  ["2 × (10 min trotando, 2 min andando)","2 × (10 min trotando, 2 min andando)","2 × (10 min trotando, 2 min andando)"],
+  ["2 × (12 min trotando, 2 min andando)","2 × (12 min trotando, 2 min andando)","2 × (12 min trotando, 2 min andando)"],
+  ["15 min sem parar","18 min sem parar","20 min sem parar 🎉"],
+  ["15 min sem parar","20 min no seu ritmo","20 min no seu ritmo"],
+  ["20 min sem parar","22 min sem parar","25 min sem parar"],
+  ["25 min sem parar","25 min sem parar","30 min sem parar"],
+  ["25 min sem parar","30 min sem parar","25 min leve"],
+  ["20 min leve","20 min leve","15 min bem leve na véspera"]
+];
+
+const VH = [
+  ["20 min leve","20 min leve","20 min leve"],
+  ["25 min leve","25 min leve","25 min leve"],
+  ["25 min leve","25 min leve","30 min leve"],
+  ["20 min leve","20 min leve","25 min leve"],
+  ["Tiros: 6 × 400 m, 1 min 30 s andando entre eles","30 min leve","Longo: 5 km leve"],
+  ["Tiros: 6 × 400 m","30 min leve","Teste: 5 km cronometrados ⏱"],
+  ["Tiros: 8 × 400 m","30 min leve","Longo: 6 km"],
+  ["Tiros: 5 × 600 m","30 min leve","Longo: 6 km"],
+  ["Tiros: 8 × 400 m","35 min leve","Longo: 6,5 km"],
+  ["Tiros: 5 × 800 m, 2 min trotando entre eles","Ritmo: 15 min forte e constante","Longo: 7 km"],
+  ["Tiros: 4 × 1 km, 2 min trotando entre eles","Ritmo: 18 min forte e constante","Longo: 7 km"],
+  ["Tiros: 5 × 1 km","Ritmo: 20 min forte e constante","Longo: 8 km"],
+  ["25 min leve","30 min com 6 acelerações de 20 s","30 min leve"],
+  ["Tiros: 4 × 1 km","Ritmo: 20 min forte e constante","Longo: 8 km"],
+  ["Tiros: 6 × 400 m","30 min leve","Simulado: 5 km cronometrados ⏱"],
+  ["Tiros: 4 × 800 m","Ritmo: 15 min forte e constante","30 min leve"],
+  ["25 min leve com 4 acelerações de 20 s","20 min leve","15 min bem leve na véspera"]
+];
+
+const FAMILY = [
+  "Caminhada em família: 30 a 40 min no parque",
+  "Vai e volta: cada um sai no seu ritmo por 15 min e volta. Todo mundo chega junto.",
+  "Vai e volta de 15 min",
+  "Vai e volta de 15 min",
+  "Vai e volta de 15 min",
+  "Vai e volta de 15 min",
+  "Vai e volta de 20 min",
+  "Vai e volta de 20 min",
+  "Vai e volta de 20 min",
+  "Vai e volta de 20 min",
+  "Vai e volta de 20 min",
+  "Vai e volta de 20 min e café da manhã em família 🥐",
+  "Caminhada de Natal em família 🎄",
+  "Vai e volta de 20 min",
+  "Vai e volta de 25 min",
+  "Simulado: todo mundo faz 5 km junto ⏱",
+  "Dia da prova 🏁"
+];
+
+function strength(pid,w){
+  if(pid==="bel"){
+    const r = w<=6?"2 × 10":w<=12?"3 × 10":"3 × 12";
+    const p = w<=6?"2 × 20 s":w<=12?"3 × 30 s":"3 × 40 s";
+    return [["Sentar e levantar da cadeira",r],["Ponte de glúteo",r],["Panturrilha com apoio na parede",r],["Prancha com os joelhos no chão",p],["Subida no degrau (cada perna)",r]];
+  }
+  return [["Agachamento búlgaro (cada perna)","3 × 12"],["Ponte de glúteo com uma perna","3 × 12"],["Panturrilha com uma perna","3 × 12"],["Prancha lateral (cada lado)","3 × 40 s"],["Pulinhos curtos na ponta dos pés","3 × 20"]];
+}
+
+function items(pid,w){
+  const i=w-1;
+  if(pid==="gab"){
+    const t=[1,2,3,4,5].map(n=>({id:"t"+n,group:"treino",title:"Treino "+n,desc:"Treino do meu plano feito",pts:10}));
+    return [...t,{id:"f",group:"familia",title:w===17?"Prova":"Treino em família",desc:FAMILY[i],pts:15}];
+  }
+  const plan = pid==="bel"?BEL:VH;
+  const runs = plan[i].map((d,k)=>({id:"r"+(k+1),group:"corrida",title:"Corrida "+(k+1),desc:d,pts:10}));
+  const str = [1,2].map(n=>({id:"s"+n,group:"forca",title:"Fortalecimento "+n,desc:"5 exercícios, cerca de 20 min",pts:5}));
+  return [...runs,...str,{id:"f",group:"familia",title:w===17?"Prova":"Treino em família",desc:FAMILY[i],pts:15}];
+}
+
+/* ==== DIAS ==== */
+// Semana vai de quinta a quarta (começa 01/10, termina na prova 27/01)
+const OFF = {r1:0, s1:1, r2:2, f:3, s2:4, r3:5};
+const WD = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+function offsetOf(id,w){
+  let o = OFF[id];
+  if(w===17){ if(id==="s2") o=3; if(id==="f") o=6; }
+  return o;
+}
+const restOffset = w => w===17 ? 4 : 6;
+const dateAt = (w,o) => new Date(START.getTime()+((w-1)*7+o)*DAY);
+function dayLabel(d){ return WD[d.getDay()]+" "+String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0"); }
+const sameDay = (a,b) => a.getTime()===b.getTime();
+
+/* ==== ESTADO ==== */
+const LS = {
+  get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let checks = LS.get("c5k_checks",{});   // {"bel|3|r1": {v:1,t:ms}}
+let me = LS.get("c5k_me",null);
+let tab = "semana";
+const today = new Date(); today.setHours(0,0,0,0);
+const curWeek = Math.min(WEEKS,Math.max(1,Math.floor((today-START)/DAY/7)+1));
+let viewWeek = curWeek;
+
+const key=(p,w,id)=>p+"|"+w+"|"+id;
+const isDone=(p,w,id)=>!!(checks[key(p,w,id)]&&checks[key(p,w,id)].v);
+const person=id=>PEOPLE.find(p=>p.id===id);
+
+function weekComplete(p,w){
+  if(p==="gab") return items(p,w).filter(x=>x.group==="treino"&&isDone(p,w,x.id)).length>=3;
+  return items(p,w).filter(x=>x.group!=="familia").every(x=>isDone(p,w,x.id));
+}
+function weekPts(p,w){
+  let s=items(p,w).reduce((a,x)=>a+(isDone(p,w,x.id)?x.pts:0),0);
+  if(p!=="gab"&&weekComplete(p,w)) s+=10;
+  return s;
+}
+function totals(p){
+  let pts=0,count=0;
+  for(let w=1;w<=WEEKS;w++){pts+=weekPts(p,w);count+=items(p,w).filter(x=>isDone(p,w,x.id)).length}
+  let streak=0,w=curWeek;
+  if(!weekComplete(p,w)) w--;
+  while(w>=1&&weekComplete(p,w)){streak++;w--}
+  return {pts,count,streak};
+}
+
+/* ==== SYNC ==== */
+async function pull(){
+  if(!SCRIPT_URL) return;
+  try{
+    const r=await fetch(SCRIPT_URL,{cache:"no-store"});
+    const data=await r.json();
+    checks=data; LS.set("c5k_checks",checks); render();
+  }catch(e){}
+}
+async function push(k,v){
+  if(!SCRIPT_URL) return;
+  try{await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify({key:k,v:v?1:0})})}
+  catch(e){toast("Sem conexão. O check vai aparecer para os outros quando a página recarregar.")}
+}
+
+/* ==== UI ==== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=d=>d.toLocaleDateString("pt-BR",{day:"numeric",month:"short"}).replace(".","");
+function weekRange(w){const a=new Date(START.getTime()+(w-1)*7*DAY);const b=new Date(a.getTime()+6*DAY);return fmt(a)+" a "+fmt(b)}
+function ago(t){const m=Math.round((Date.now()-t)/6e4);if(m<1)return"agora";if(m<60)return"há "+m+" min";const h=Math.round(m/60);if(h<24)return"há "+h+" h";const d=Math.round(h/24);return d===1?"ontem":"há "+d+" dias"}
+let tt;function toast(m){const e=$("#toast");e.textContent=m;e.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("show"),2600)}
+
+const SUBS=["Cada check conta. Bora?","Um treino de cada vez.","Quem treina junto chega junto.","O importante é não parar de marcar.","Hoje é um bom dia pra um check."];
+
+function renderHero(){
+  const d=Math.max(0,Math.ceil((RACE-today)/DAY));
+  $("#days").textContent=d;
+  $("#dayslabel").innerHTML=d===0?"é hoje!<br>Boa prova 🏁":(d===1?"dia para<br>a largada":"dias para<br>a largada");
+  const before=today<START;
+  $("#heroSub").textContent=before?"Os treinos começam quinta, 1º de outubro. Escolha seu nome e bora.":SUBS[today.getDate()%SUBS.length];
+  let done=0,all=0;
+  PEOPLE.forEach(p=>{for(let w=1;w<=WEEKS;w++){const it=items(p.id,w);all+=it.length;done+=it.filter(x=>isDone(p.id,w,x.id)).length}});
+  $("#famBar").style.width=(all?done/all*100:0)+"%";
+  $("#famTxt").textContent=done+(done===1?" treino da família":" treinos da família");
+}
+
+function whoPicker(){
+  return `<div class="who" role="group" aria-label="Quem é você">${PEOPLE.map(p=>`<button data-me="${p.id}" style="--c:${p.color}" aria-pressed="${me===p.id}">${p.name}</button>`).join("")}</div>`;
+}
+
+function renderSemana(){
+  if(!me) return `<h2>Quem é você?</h2><p class="lead">Escolha seu nome para ver seus treinos da semana.</p>${whoPicker()}`;
+  const p=person(me), it=items(me,viewWeek);
+  const max=me==="gab"?65:65;
+  let html=whoPicker();
+  html+=`<div class="weeknav"><button data-wk="-1" aria-label="Semana anterior" ${viewWeek<=1?"disabled":""}>‹</button>
+    <div><strong>Semana ${viewWeek} de ${WEEKS}${viewWeek===curWeek?'<span class="tag">agora</span>':""}</strong><small>${weekRange(viewWeek)}</small></div>
+    <button data-wk="1" aria-label="Próxima semana" ${viewWeek>=WEEKS?"disabled":""}>›</button></div>`;
+  html+=`<div class="weekscore"><span>${weekComplete(me,viewWeek)?"Semana completa ✅":"Pontos da semana"}</span><b>${weekPts(me,viewWeek)} / ${max}</b></div>`;
+  if(me==="bel") html+=`<p class="note">Em toda corrida: 5 min andando antes e 5 min depois.</p>`;
+  else if(me!=="gab"&&viewWeek>=5) html+=`<p class="note">Em dia de tiros ou ritmo: 10 min trotando antes e depois.</p>`;
+  const check=`<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const itemBtn=(x,day)=>{
+    const d=isDone(me,viewWeek,x.id);
+    const isToday=day&&sameDay(day,today);
+    return `<li><button class="item ${d?"done":""} ${isToday?"today":""}" style="--c:${p.color}" data-item="${x.id}" aria-pressed="${d}">
+      <span class="box">${check}</span><span style="flex:1">${day?`<span class="day">${dayLabel(day)}${isToday?" · hoje":""}</span>`:""}<span class="t">${esc(x.title)}<em>+${x.pts}</em></span><span class="d">${esc(x.desc)}</span></span></button></li>`;
+  };
+  if(me==="gab"){
+    html+=`<div class="group">Treinos</div><ul class="items">`;
+    it.filter(x=>x.group==="treino").forEach(x=>html+=itemBtn(x,null));
+    const f=it.find(x=>x.id==="f");
+    html+=`</ul><div class="group">Com a família</div><ul class="items">${itemBtn(f,dateAt(viewWeek,offsetOf("f",viewWeek)))}</ul>`;
+    return html;
+  }
+  const agenda=it.map(x=>({x,o:offsetOf(x.id,viewWeek)}));
+  agenda.push({rest:true,o:restOffset(viewWeek)});
+  agenda.sort((a,b)=>a.o-b.o);
+  html+=`<ul class="items">`;
+  agenda.forEach(a=>{
+    const day=dateAt(viewWeek,a.o);
+    if(a.rest){
+      const isToday=sameDay(day,today);
+      html+=`<li class="rest ${isToday?"today":""}"><span class="day">${dayLabel(day)}${isToday?" · hoje":""}</span>Descanso 😴</li>`;
+    } else html+=itemBtn(a.x,day);
+  });
+  html+=`</ul>`;
+  html+=`<details class="ex"><summary>Exercícios de fortalecimento</summary><ul class="exlist">${strength(me,viewWeek).map(([n,r])=>`<li><span>${n}</span><span>${r}</span></li>`).join("")}</ul></details>`;
+  html+=`<p class="note" style="margin-top:14px">Não deu no dia? Troque por outro, só evite correr dois dias seguidos.</p>`;
+  return html;
+}
+
+function renderPlacar(){
+  const rows=PEOPLE.map(p=>({...p,...totals(p.id)})).sort((a,b)=>b.pts-a.pts);
+  const anyPts=rows.some(r=>r.pts>0);
+  let html=`<h2>Placar</h2><p class="lead">Ganha quem for mais constante até a largada.</p><div class="bibs">`;
+  rows.forEach((r,i)=>{
+    html+=`<article class="bib ${anyPts&&i===0?"first":""}" style="--c:${r.color}"><i class="h1"></i><i class="h2"></i>
+      <header><span>${i+1}º</span><span>SP 5K</span></header>
+      <div class="num">${r.pts}</div><div class="nm">${r.name}</div>
+      <div class="st">${r.count} ${r.count===1?"treino":"treinos"}${r.streak?`, ${r.streak} ${r.streak===1?"semana completa seguida":"semanas completas seguidas"} 🔥`:""}</div></article>`;
+  });
+  html+=`</div><h2 style="margin-top:30px;font-size:1.6rem">Últimos treinos</h2>`;
+  const feed=Object.entries(checks).filter(([k,v])=>v&&v.v&&v.t).sort((a,b)=>b[1].t-a[1].t).slice(0,15);
+  if(!feed.length) html+=`<p class="empty">Nenhum treino marcado ainda. O primeiro check abre o placar.</p>`;
+  else{
+    html+=`<ul class="feed">`;
+    feed.forEach(([k,v])=>{
+      const [pid,w,id]=k.split("|"),p=person(pid);if(!p)return;
+      const x=items(pid,+w).find(i=>i.id===id);if(!x)return;
+      html+=`<li><span class="dot" style="--c:${p.color}"></span><span><b>${p.name}</b> fez ${esc(x.title.toLowerCase())} da semana ${w}</span><span class="when">${ago(v.t)}</span></li>`;
+    });
+    html+=`</ul>`;
+  }
+  html+=`<div class="pts" style="margin-top:24px"><b>Como pontua</b><ul><li>Corrida ou treino: 10 pontos</li><li>Fortalecimento: 5 pontos</li><li>Treino em família: 15 pontos</li><li>Semana completa: 10 pontos de bônus</li></ul></div>`;
+  return html;
+}
+
+function planDays(pid,w){
+  const rows=items(pid,w).map(x=>({x,o:offsetOf(x.id,w)}));
+  rows.push({rest:true,o:restOffset(w)});
+  rows.sort((a,b)=>a.o-b.o);
+  return rows.map(r=>{
+    const d=`<b>${dayLabel(dateAt(w,r.o))}</b> `;
+    if(r.rest) return `<p class="off">${d}Descanso</p>`;
+    if(r.x.group==="familia") return `<p class="fam">${d}${esc(r.x.desc)}</p>`;
+    if(r.x.group==="forca") return `<p class="str">${d}Fortalecimento</p>`;
+    return `<p>${d}${esc(r.x.desc)}</p>`;
+  }).join("");
+}
+
+function renderPlano(){
+  const pid=me||"bel", p=person(pid);
+  let html=`<h2>O plano</h2><p class="lead">17 semanas, de quinta a quarta, até a largada. Não deu no dia? Troque por outro, só evite correr dois dias seguidos.</p>${whoPicker()}`;
+  if(pid==="gab"){
+    html+=`<div class="pts">Gab segue o próprio plano. Aqui ele marca até 5 treinos por semana e participa dos treinos em família.</div>`;
+    for(let w=1;w<=WEEKS;w++) html+=`<details class="wk ${w===curWeek?"now":""}" ${w===curWeek?"open":""} style="--c:${p.color}"><summary><strong>Semana ${w}</strong><small>${weekRange(w)}</small></summary><div class="body"><p class="fam"><b>${dayLabel(dateAt(w,offsetOf("f",w)))}</b> ${esc(FAMILY[w-1])}</p></div></details>`;
+    return html;
+  }
+  html+=`<details class="ex" style="margin-bottom:16px"><summary>Fortalecimento, 2 vezes por semana</summary><ul class="exlist">${strength(pid,curWeek).map(([n,r])=>`<li><span>${n}</span><span>${r}</span></li>`).join("")}</ul></details>`;
+  const plan=pid==="bel"?BEL:VH;
+  for(let w=1;w<=WEEKS;w++){
+    html+=`<details class="wk ${w===curWeek?"now":""}" ${w===curWeek?"open":""} style="--c:${p.color}"><summary><strong>Semana ${w}${w===curWeek?'<span class="tag">agora</span>':""}</strong><small>${weekRange(w)}</small></summary><div class="body">
+      ${planDays(pid,w)}</div></details>`;
+  }
+  return html;
+}
+
+function render(){
+  renderHero();
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  $("#view").innerHTML=tab==="semana"?renderSemana():tab==="placar"?renderPlacar():renderPlano();
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.tab){tab=t.dataset.tab;render();window.scrollTo({top:0});return}
+  if(t.dataset.me){me=t.dataset.me;LS.set("c5k_me",me);render();return}
+  if(t.dataset.wk){viewWeek=Math.min(WEEKS,Math.max(1,viewWeek+ +t.dataset.wk));render();return}
+  if(t.dataset.item&&me){
+    const k=key(me,viewWeek,t.dataset.item);
+    const was=isDone(me,viewWeek,t.dataset.item);
+    const wasComplete=weekComplete(me,viewWeek);
+    checks[k]={v:was?0:1,t:Date.now()};
+    LS.set("c5k_checks",checks);
+    push(k,!was);
+    render();
+    const el=document.querySelector(`[data-item="${t.dataset.item}"]`);if(el&&!was)el.classList.add("pop");
+    if(!was){
+      if(!wasComplete&&weekComplete(me,viewWeek)) toast(me==="gab"?"Semana completa! 🔥":"Semana completa! +10 de bônus 🔥");
+      else toast("Boa, "+person(me).name+"! +"+items(me,viewWeek).find(x=>x.id===t.dataset.item).pts);
+    }
+  }
+});
+
+if(!SCRIPT_URL) $("#localbar").hidden=false;
+render();
+pull();
+setInterval(pull,60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)pull()});
+</script>
+</body>
+</html>
